@@ -24,11 +24,16 @@ export enum ParamType {
   Choice = 'choice'
 };
 
+export type ParamChoice = {
+  value: string;
+  label?: string;
+};
+
 export type TemplateParam = {
   name: string;
   label?: string;
   type: ParamType;
-  values?: string[];
+  values?: ParamChoice[];
   demoValue: string;
   defaultValue?: string;
 };
@@ -83,7 +88,7 @@ export const validateParamValue = (paramSpec: TemplateParam, paramValue: string)
       // TODO: Check basic format
       return;
     case(ParamType.Choice):
-      if (paramSpec.values && !paramSpec.values.includes(paramValue)) {
+      if (paramSpec.values && !paramSpec.values.map(v => v.value).includes(paramValue)) {
         throw `Invalid value "${paramValue}" for ${paramSpec.label }. Must be one of ${paramSpec.values.join(', ')}`;
       }
   }

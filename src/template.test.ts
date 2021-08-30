@@ -34,11 +34,11 @@ test('validateParamValue', () => {
   }, '#abcdef');
 
   validateParamValue({
-    name: 'country', type: ParamType.Choice, values: ['Spain', 'France'], demoValue: 'Spain'
+    name: 'country', type: ParamType.Choice, values: [{ value: 'Spain' }, { value: 'France' }], demoValue: 'Spain'
   }, 'France');
 
   expect(() => validateParamValue({
-    name: 'country', type: ParamType.Choice, values: ['Spain', 'France'], demoValue: 'Spain'
+    name: 'country', type: ParamType.Choice, values: [{ value: 'Spain' }, { value: 'France' }], demoValue: 'Spain'
   }, 'Wakanda')).toThrowError();
 });
 
