@@ -21,13 +21,14 @@ export enum ParamType {
   String = 'string',
   Color = 'color',
   ImageUrl = 'imageUrl',
-  TextDirection = 'textDirection'
+  Choice = 'choice'
 };
 
 export type TemplateParam = {
   name: string;
   slug: string;
   type: ParamType;
+  values?: string[];
   demoValue: string;
   defaultValue?: string;
 };
@@ -66,4 +67,24 @@ export const parseTemplateManifestParams = (manifest: any): TemplateParam[] => {
     parameters.push(param);
   });
   return parameters;
+};
+
+/**
+ * Throw an error when the value is not correct.
+ */
+export const validateParameterValue = (paramSpec: TemplateParam, paramValue: string) => {
+  switch(paramSpec.type) {
+    case(ParamType.String):
+      return;
+    case(ParamType.Color):
+      // TODO: Check color format
+      return;
+    case(ParamType.ImageUrl):
+      // TODO: Check basic format
+      return;
+    case(ParamType.Choice):
+      if (paramSpec.values && !paramSpec.values.includes(paramValue)) {
+        throw `Invalid value "${paramValue}" for ${paramSpec.name}. Must be one of ${paramSpec.values.join(', ')}`;
+      }
+  }
 };
