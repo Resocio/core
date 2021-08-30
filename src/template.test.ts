@@ -1,4 +1,4 @@
-import { ParamType, parseTemplateManifestParams, renderTemplate, validateParameterValue } from './template'
+import { paramLabel, ParamType, parseTemplateManifestParams, renderTemplate, validateParameterValue } from './template'
 
 test('renderTemplate', () => {
   expect(renderTemplate('# {{> content }} *', { partials: { content: 'Hello {{name}}' }, parameters: [] }, { name: 'world' }))
@@ -11,14 +11,14 @@ test('parseTemplateManifestParams', () => {
   })).toEqual([]);
   expect(parseTemplateManifestParams({
     parameters: [{
-      name: 'P1',
-      slug: 'p1',
+      label: 'P 1',
+      name: 'p1',
       type: 'string',
       demoValue: 'Value of P1'
     }]
   })).toEqual([{
-    name: 'P1',
-    slug: 'p1',
+    label: 'P 1',
+    name: 'p1',
     type: ParamType.String,
     demoValue: 'Value of P1'
   }]);
@@ -26,18 +26,28 @@ test('parseTemplateManifestParams', () => {
 
 test('validateParameterValue', () => {
   validateParameterValue({
-    name: 'Some text', slug: 'someText', type: ParamType.String, demoValue: 'Foo'
+    name: 'someText', type: ParamType.String, demoValue: 'Foo'
   }, 'Lorem ipsum');
 
   validateParameterValue({
-    name: 'The Color', slug: 'theColor', type: ParamType.Color, demoValue: '#456789'
+    name: 'theColor', type: ParamType.Color, demoValue: '#456789'
   }, '#abcdef');
 
   validateParameterValue({
-    name: 'Country', slug: 'country', type: ParamType.Choice, values: ['Spain', 'France'], demoValue: 'Spain'
+    name: 'country', type: ParamType.Choice, values: ['Spain', 'France'], demoValue: 'Spain'
   }, 'France');
 
   expect(() => validateParameterValue({
-    name: 'Country', slug: 'country', type: ParamType.Choice, values: ['Spain', 'France'], demoValue: 'Spain'
+    name: 'country', type: ParamType.Choice, values: ['Spain', 'France'], demoValue: 'Spain'
   }, 'Wakanda')).toThrowError();
+});
+
+test('paramLabel', () => {
+  expect(paramLabel({
+    name: 'someName', type: ParamType.String, demoValue: 'Foo'
+  })).toEqual('Some Name')
+
+  expect(paramLabel({
+    label: 'Some Label', name: 'someName', type: ParamType.String, demoValue: 'Foo'
+  })).toEqual('Some Label')
 });

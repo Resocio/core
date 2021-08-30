@@ -26,7 +26,7 @@ export enum ParamType {
 
 export type TemplateParam = {
   name: string;
-  slug: string;
+  label?: string;
   type: ParamType;
   values?: string[];
   demoValue: string;
@@ -43,7 +43,7 @@ export type ParamValues = { [ name: string ]: string };
 export const demoParamValues = (params: TemplateParam[]): ParamValues => {
   const values: ParamValues = {};
   params.forEach(param => {
-    values[param.slug] = param.demoValue;
+    values[param.name] = param.demoValue;
   });
   return values;
 };
@@ -84,7 +84,12 @@ export const validateParameterValue = (paramSpec: TemplateParam, paramValue: str
       return;
     case(ParamType.Choice):
       if (paramSpec.values && !paramSpec.values.includes(paramValue)) {
-        throw `Invalid value "${paramValue}" for ${paramSpec.name}. Must be one of ${paramSpec.values.join(', ')}`;
+        throw `Invalid value "${paramValue}" for ${paramSpec.label }. Must be one of ${paramSpec.values.join(', ')}`;
       }
   }
 };
+
+export const paramLabel = (param: TemplateParam): string => (
+  // See https://stackoverflow.com/questions/4149276/how-to-convert-camelcase-to-camel-case#answer-4149393
+  param.label || param.name.replace(/([A-Z])/g, ' $1').replace(/^./, function(str){ return str.toUpperCase(); })
+);
