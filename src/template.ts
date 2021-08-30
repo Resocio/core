@@ -72,7 +72,7 @@ export const parseTemplateManifestParams = (manifest: any): TemplateParam[] => {
 /**
  * Throw an error when the value is not correct.
  */
-export const validateParameterValue = (paramSpec: TemplateParam, paramValue: string) => {
+export const validateParamValue = (paramSpec: TemplateParam, paramValue: string) => {
   switch(paramSpec.type) {
     case(ParamType.String):
       return;

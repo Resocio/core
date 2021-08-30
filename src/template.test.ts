@@ -1,4 +1,4 @@
-import { paramLabel, ParamType, parseTemplateManifestParams, renderTemplate, validateParameterValue } from './template'
+import { paramLabel, ParamType, parseTemplateManifestParams, renderTemplate, validateParamValue } from './template'
 
 test('renderTemplate', () => {
   expect(renderTemplate('# {{> content }} *', { partials: { content: 'Hello {{name}}' }, parameters: [] }, { name: 'world' }))
@@ -24,20 +24,20 @@ test('parseTemplateManifestParams', () => {
   }]);
 });
 
-test('validateParameterValue', () => {
-  validateParameterValue({
+test('validateParamValue', () => {
+  validateParamValue({
     name: 'someText', type: ParamType.String, demoValue: 'Foo'
   }, 'Lorem ipsum');
 
-  validateParameterValue({
+  validateParamValue({
     name: 'theColor', type: ParamType.Color, demoValue: '#456789'
   }, '#abcdef');
 
-  validateParameterValue({
+  validateParamValue({
     name: 'country', type: ParamType.Choice, values: ['Spain', 'France'], demoValue: 'Spain'
   }, 'France');
 
-  expect(() => validateParameterValue({
+  expect(() => validateParamValue({
     name: 'country', type: ParamType.Choice, values: ['Spain', 'France'], demoValue: 'Spain'
   }, 'Wakanda')).toThrowError();
 });
