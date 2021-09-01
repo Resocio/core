@@ -1,6 +1,8 @@
 import axios from 'axios';
 import Mustache from 'mustache'
 
+export const DefaultManifestName = 'resoc.manifest.json';
+
 const PartialContent = 'content';
 const PartialStyles = 'styles';
 
